@@ -50,3 +50,13 @@ html,body {
 	background-color: #ffe9f1;
 	color: #cc7a97;
 }
+
+.page-link{
+	color:gray !important;
+}
+.page-item.active .page-link{
+	color:white !important;
+	background-color:gray !important;
+	border-color:gray !important;
+}
+

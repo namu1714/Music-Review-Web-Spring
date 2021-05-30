@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.muizic.mapper.CommentMapper">
+
+<select id="getListByAlbum" resultType="com.muizic.domain.CommentVO">
+<![CDATA[
+	select * from comment where album_no=#{albumNo} 
+	order by comment_no desc limit #{cri.startRow}, #{cri.amount}
+]]>
+</select>
+
+<select id="read" resultType="com.muizic.domain.CommentVO">
+	select * from comment where comment_no = #{commentNo}
+</select>
+
+<insert id="insert">
+	insert into comment (album_no, writer_id, writer_name, content, regdate, moddate)
+	values (#{albumNo}, #{writerId}, #{writerName}, #{content}, 
+	#{regdate, jdbcType=TIMESTAMP}, #{moddate, jdbcType=TIMESTAMP})
+</insert>
+
+<insert id="insertSelectKey">
+	insert into comment (album_no, writer_id, writer_name, content, regdate, moddate)
+	values (#{albumNo}, #{writerId}, #{writerName}, #{content}, 
+	#{regdate, jdbcType=TIMESTAMP}, #{moddate, jdbcType=TIMESTAMP})
+	
+	<selectKey keyProperty="commentNo" resultType="int" order ="AFTER">
+   		select LAST_INSERT_ID()             
+ 	</selectKey>
+</insert>
+
+<delete id="delete">
+	delete from comment where comment_no = #{commentNo}
+</delete>
+
+<update id="update">
+	update comment
+	set content = #{content},
+	moddate = #{moddate, jdbcType=TIMESTAMP}
+	where comment_no = #{commentNo}
+</update>
+
+<select id="getCountByAlbum" resultType="int">
+	select count(*) from comment where album_no=#{albumNo} and comment_no > 0
+</select>
+
+</mapper>
