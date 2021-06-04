@@ -164,7 +164,7 @@ $(document).ready(function(e) {
 				str += "		<small class='text-muted'>" + commentService.displayTime(list[i].moddate) + "</small>";
 				str += "		<a class='deleteComment' href='" + list[i].commentNo + "' data-writer='" + list[i].writerId + "' style='float:right'>삭제</a>"
 				str += "		<a class='modifyComment' href='" + list[i].commentNo + "' style='float:right'>수정&nbsp;</a></div>"
-				str += "	<div class='comment-body'><p><pre>" + list[i].content + "</pre></p></div></div>";
+				str += "	<div class='comment-body'><p><pre style='white-space:pre-wrap'>" + list[i].content + "</pre></p></div></div>";
 			}
 			
 			commentBody.html(str);

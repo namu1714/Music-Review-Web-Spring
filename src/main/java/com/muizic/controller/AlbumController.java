@@ -30,14 +30,17 @@ public class AlbumController {
 	private final AlbumService service;
 	
 	@GetMapping("/list")
-	public void list(Integer pageNum, Integer amount, Model model) {
+	public void list(Integer pageNum, Integer amount, String type, String keyword, Model model) {
 		Criteria cri;
 		if(pageNum != null && amount != null)
 			cri = new Criteria(pageNum, amount);
 		else
 			cri = new Criteria();
 		
+		cri.setKeyword(keyword);
+		cri.setType(type);
 		log.info("list" + cri);
+		
 		model.addAttribute("albumList", service.getList(cri));
 		
 		int total = service.getTotal(cri);

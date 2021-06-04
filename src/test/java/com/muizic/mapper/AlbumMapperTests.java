@@ -65,7 +65,6 @@ public class AlbumMapperTests {
 		log.info("UPDATE COUNT: " + count);
 	}
 	
-	@Test
 	public void testPaging() {
 		Criteria cri = new Criteria();
 		cri.setAmount(9);
@@ -76,11 +75,20 @@ public class AlbumMapperTests {
 		list.forEach(album -> log.info(album.getTitle()));
 	}
 	
-	@Test
 	public void testTotalCount() {
 		Criteria cri = new Criteria();
 		cri.setAmount(9);
 		cri.setPageNum(1);
 		log.info("TOTAL ALBUM COUNT: " + mapper.getTotalCount(cri));
+	}
+	
+	@Test
+	public void testSearch() {
+		Criteria cri = new Criteria();
+		cri.setKeyword("");
+		cri.setType("AT");
+		
+		List<AlbumVO> list = mapper.getListWithPaging(cri);
+		list.forEach(album -> log.info(album));
 	}
 }

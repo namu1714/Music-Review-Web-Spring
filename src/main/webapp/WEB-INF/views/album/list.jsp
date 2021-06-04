@@ -28,12 +28,18 @@ img {
 	<div class="sidebar"></div>
 	<div class="content">
 		<form action="/album/list" method="GET">
-			<input type="text" name="search" value="${inputText}"
-				style="width: 450px"> <input type="submit" value="검색">
+			<select name='type'>
+				<option value="AT">전체</option>
+				<option value="A">아티스트</option>
+				<option value="T">타이틀</option>
+			</select>
+			<input type="text" name="keyword" value="${pageMaker.cri.keyword}" style="width: 450px"> 
+			<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+			<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+			<input type="submit" value="검색">
 		</form>
-		<button class="addAlbum" onclick="location.href='/album/upload'">앨범
-			등록</button>
-
+		
+		<button class="addAlbum" onclick="location.href='/album/upload'">앨범 등록</button>
 		<br>
 
 		<!---------------앨범 이미지 정렬---------------->

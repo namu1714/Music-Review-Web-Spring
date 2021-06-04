@@ -6,7 +6,24 @@
 
 <select id="getListWithPaging" resultType="com.muizic.domain.AlbumVO">
 <![CDATA[
-	select * from album order by album_no desc limit #{startRow}, #{amount}
+	select * from album
+]]>
+<trim prefix="WHERE (" suffix=")" prefixOverrides="OR">
+	<foreach item='type' collection='typeArr'>
+		<trim prefix="OR">
+			<choose>
+				<when test="type == 'T'.toString()">
+					title like CONCAT('%',#{keyword},'%')
+				</when>
+				<when test="type == 'A'.toString()">
+					artist like CONCAT('%',#{keyword},'%')
+				</when>
+			</choose>
+		</trim>
+	</foreach>
+</trim>
+<![CDATA[
+	order by album_no desc limit #{startRow}, #{amount}
 ]]>
 </select>
 

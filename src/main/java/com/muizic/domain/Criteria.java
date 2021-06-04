@@ -14,6 +14,9 @@ public class Criteria {
 	private int amount;
 	private int startRow;
 	
+	private String type;
+	private String keyword;
+	
 	public Criteria() {
 		this(1, 9);
 	}
@@ -22,6 +25,10 @@ public class Criteria {
 		this.pageNum = pageNum;
 		this.amount = amount;
 		this.startRow = (pageNum - 1) * amount;
+	}
+	
+	public String[] getTypeArr() {
+		return type == null? new String[]{}: type.split("");
 	}
 	
 	public String getListLink() {
