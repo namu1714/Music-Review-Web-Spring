@@ -52,31 +52,16 @@ public class CommentController {
 			MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	public ResponseEntity<AlbumCommentDTO> getList(@PathVariable("page") int page, @PathVariable("albumNo") Long albumNo) {
-
 		log.info("getList...................");
+		
 		Criteria cri = new Criteria(page, 5);
-
 		log.info("cri: " + cri);
 
 		return new ResponseEntity<>(service.getListPage(albumNo, cri), HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = { RequestMethod.PUT, RequestMethod.PATCH },
-			value = "/{no}",
-			consumes = "application/json",
-			produces = { MediaType.TEXT_PLAIN_VALUE })
-		public ResponseEntity<String> modify(@RequestBody CommentUpdateRequestDTO dto, @PathVariable("no") Long commentNo) {
-
-			log.info("comment no: " + commentNo);
-			log.info("modify: " + dto);
-			
-			return service.modify(dto) == true
-				? new ResponseEntity<>("success", HttpStatus.OK)
-				: new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	
 	@DeleteMapping(value = "/{no}")
-	public ResponseEntity<String> remove(@PathVariable("writer") String writerId, @PathVariable("no") Long commentNo){
+	public ResponseEntity<String> remove(@RequestBody String writerId, @PathVariable("no") Long commentNo){
 		log.info("remove: " + commentNo);
 		
 		log.info("writer id: " + writerId);

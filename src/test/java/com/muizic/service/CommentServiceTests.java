@@ -42,7 +42,6 @@ public class CommentServiceTests {
 		log.info("생성된 앨범 코멘트의 번호: " + comment.getCommentNo());
 	}
 	
-	@Test
 	public void testGetList() {
 		AlbumCommentDTO commentPage = service.getListPage(26L, (new Criteria(1, 5)));
 		log.info(commentPage.getCommentCnt());
@@ -57,6 +56,7 @@ public class CommentServiceTests {
 		log.info("REMOVE RESULT: " + service.remove(9L));
 	}
 	
+	@Test
 	public void testModify() {
 		CommentVO comment = service.get(8L);
 		
@@ -64,8 +64,9 @@ public class CommentServiceTests {
 			return;
 		}
 		
-		CommentUpdateRequestDTO updateReq = new CommentUpdateRequestDTO();
+		CommentVO updateReq = new CommentVO();
 		updateReq.setCommentNo(8L);
+		updateReq.setWriterId("namu1714");
 		updateReq.setContent("수정해도 음악이 좀 구리네요~~");
 		log.info("MODIFY RESULT: " + service.modify(updateReq));
 	}

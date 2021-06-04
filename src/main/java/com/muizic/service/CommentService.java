@@ -10,7 +10,7 @@ public interface CommentService {
 	
 	public CommentVO get(Long commentNo);
 	
-	public boolean modify(CommentUpdateRequestDTO commentUpdateReq);
+	public boolean modify(CommentVO comment);
 	
 	public boolean remove(Long commentNo);
 	

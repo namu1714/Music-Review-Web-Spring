@@ -37,9 +37,9 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	@Override
-	public boolean modify(CommentUpdateRequestDTO commentUpdateReq) {
-		log.info("comment modify" + commentUpdateReq);
-		CommentVO comment = commentUpdateReq.toCommentVO();
+	public boolean modify(CommentVO comment) {
+		log.info("comment modify" + comment);
+		comment.setModdate(new Date());
 		return mapper.update(comment) == 1;
 	}
 

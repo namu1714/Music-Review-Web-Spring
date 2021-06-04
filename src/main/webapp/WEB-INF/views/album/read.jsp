@@ -25,7 +25,7 @@ table {
 }
 .comment-body{
 	padding:5px;
-	height:90px;
+	min-height:90px;
 }
 
 td {
@@ -159,11 +159,12 @@ $(document).ready(function(e) {
 			
 			var str=""
 			for (var i = 0; i < list.length; i++) {
-				str += "<div class='readComment' data-no='" + list[i].commentNo + "'>"
+				str += "<div class='readComment'>"
 				str += "	<div class='comment-header'><strong class='primary-font'>" + list[i].writerName + "</strong>";
-				str += "		<small class='text-muted' style='float:right'>";
-				str += "		최근작성시간:" + commentService.displayTime(list[i].regdate) + "</small></div>";
-				str += "	<div class='comment-body'><p>" + list[i].content + "</p></div></div>";
+				str += "		<small class='text-muted'>" + commentService.displayTime(list[i].moddate) + "</small>";
+				str += "		<a class='deleteComment' href='" + list[i].commentNo + "' data-writer='" + list[i].writerId + "' style='float:right'>삭제</a>"
+				str += "		<a class='modifyComment' href='" + list[i].commentNo + "' style='float:right'>수정&nbsp;</a></div>"
+				str += "	<div class='comment-body'><p><pre>" + list[i].content + "</pre></p></div></div>";
 			}
 			
 			commentBody.html(str);
@@ -198,7 +199,6 @@ $(document).ready(function(e) {
 		}
 		str += "</ul></div>";
 		
-		console.log(str);
 		commentFooter.html(str);
 	}
 	
@@ -215,14 +215,14 @@ $(document).ready(function(e) {
 	
 	$('#commentSubmit').on("click", function(e){
 		e.preventDefault();
-		 var formArr = $("form[id=commentForm]").serializeArray() ;
-		 var obj = null;
-         if (formArr) {
-             obj = {};
-             jQuery.each(formArr, function() {
-                 obj[this.name] = this.value;
-             });
-         }//if ( arr ) {
+		var formArr = $("form[id=commentForm]").serializeArray() ;
+		var obj = null;
+        if (formArr) {
+        	obj = {};
+       		jQuery.each(formArr, function() {
+       			obj[this.name] = this.value;
+            });
+        }
 		 
 		commentService.add(obj, 
 		function(result){
@@ -230,6 +230,32 @@ $(document).ready(function(e) {
 			 $("form[id=commentForm]").find("input").val("");
 			 $("form[id=commentForm]").find("textarea").val("");
 		});
+	})
+	
+	$(document).on("click", ".deleteComment", function(e){
+		e.preventDefault();
+		var no = $(this).attr("href");
+		var writer = $(this).data("writer");
+		console.log("delete comment:" + no);
+		
+		if (confirm("정말 삭제하시겠습니까?") != true) {
+			return false;
+		}
+		commentService.remove(no, writer,
+		function(result){
+			if(result == "success"){
+				alert("삭제가 완료되었습니다.");
+			}
+			showCommentList(pageNum);
+		});
+	})
+	
+	$(document).on("click", ".modifyComment", function(e){
+		e.preventDefault();
+		var no = $(this).attr("href");
+		console.log("delete comment:" + no);
+		
+		window.location.href = '/comment/modify?no=' + no;
 	})
 });
 </script>

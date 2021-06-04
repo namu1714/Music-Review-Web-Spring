@@ -39,7 +39,7 @@ var commentService = (function(){
 		$.ajax({
 			type : 'delete',
 			url : '/comment/' + no,
-			data: JSON.stringify({no:no, writer:writer}),
+			data: JSON.stringify({writer:writer}),
 			contentType: "application/json; charset=utf-8"
 		}).done(function(deleteResult, status, xhr) {
 			if(callback) {
