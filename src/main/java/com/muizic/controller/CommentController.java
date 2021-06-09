@@ -3,6 +3,7 @@ package com.muizic.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.muizic.domain.AlbumCommentDTO;
-import com.muizic.domain.CommentUpdateRequestDTO;
 import com.muizic.domain.CommentVO;
 import com.muizic.domain.Criteria;
 import com.muizic.service.CommentService;
@@ -29,6 +29,7 @@ public class CommentController {
 
 	private final CommentService service;
 
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping(value = "/new", consumes = "application/json", produces = { MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<String> create(@RequestBody CommentVO vo) {
 		log.info("ReplyVO " + vo);
@@ -60,6 +61,7 @@ public class CommentController {
 		return new ResponseEntity<>(service.getListPage(albumNo, cri), HttpStatus.OK);
 	}
 	
+	@PreAuthorize("principal.username == #writerId")
 	@DeleteMapping(value = "/{no}")
 	public ResponseEntity<String> remove(@RequestBody String writerId, @PathVariable("no") Long commentNo){
 		log.info("remove: " + commentNo);

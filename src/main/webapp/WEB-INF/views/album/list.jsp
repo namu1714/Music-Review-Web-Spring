@@ -1,6 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 
 <%@ include file="../layout/header.jsp"%>
 
@@ -18,10 +18,7 @@ img {
 }
 
 .addAlbum {
-	position: absolute;
-	right: 250px;
-	top: 50px;
-	margin: 20px;
+	float:right;
 }
 </style>
 <div id="main">
@@ -37,9 +34,10 @@ img {
 			<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
 			<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
 			<input type="submit" value="검색">
+			<sec:authorize access="isAuthenticated()">
+				<button type="button" class="addAlbum" onclick="location.href='/album/upload'">앨범 등록</button>
+			</sec:authorize>
 		</form>
-		
-		<button class="addAlbum" onclick="location.href='/album/upload'">앨범 등록</button>
 		<br>
 
 		<!---------------앨범 이미지 정렬---------------->
@@ -102,17 +100,15 @@ img {
 
 
 <script type="text/javascript">
-	$(document).ready(function() {
-		var pageForm = $("#pageForm");
-		$(".paginate_button a").on("click", function(e) {
-			e.preventDefault();
+$(document).ready(function() {
+	var pageForm = $("#pageForm");
+	$(".paginate_button a").on("click", function(e) {
+		e.preventDefault();
 
-			console.log('click');
-
-			pageForm.find("input[name='pageNum']").val($(this).attr("href"));
-			pageForm.submit();
-		});
+		pageForm.find("input[name='pageNum']").val($(this).attr("href"));
+		pageForm.submit();
 	});
+});
 </script>
 
 <%@ include file="../layout/footer.jsp"%>

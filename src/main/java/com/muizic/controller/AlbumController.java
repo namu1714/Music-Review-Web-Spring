@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,11 +50,13 @@ public class AlbumController {
 		model.addAttribute("pageMaker", new PageDTO(cri, total));
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/upload")
 	public void register() {
 		
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/upload")
 	public String register(AlbumVO album, RedirectAttributes rttr) {
 		
@@ -71,6 +74,7 @@ public class AlbumController {
 		model.addAttribute("album", service.get(albumNo));
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/modify")
 	public String modify(AlbumVO album, @ModelAttribute("cri") Criteria cri, RedirectAttributes rttr) {
 		log.info("modify: " + album);
@@ -81,6 +85,7 @@ public class AlbumController {
 		return "redirect:/album/list" + cri.getListLink();
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/remove")
 	public String remove(Long albumNo, RedirectAttributes rttr) {
 		log.info("remove:" + albumNo);

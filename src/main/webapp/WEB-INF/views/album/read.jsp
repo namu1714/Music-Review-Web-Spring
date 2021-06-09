@@ -1,6 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
+
 <%@ include file="../layout/header.jsp"%>
 
 <style type="text/css">
@@ -55,12 +56,12 @@ img {
 }
 
 #commentForm {
+	text-align: right;
 	margin: 10px;
 	padding: 5px;
 }
 
 #commentSubmit{
-	float:right;
 	width:90px; height:30px;
 	border:0;
 	border-radius:10px;
@@ -85,30 +86,35 @@ img {
 
 		<form role="form" id="deleteForm" action="/album/remove" method="post">
 			<input type="hidden" name="albumNo" value="${album.albumNo}">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		</form>
-
-		<button class="btn btn-info" id="modifyButton">수정</button>
-		<button class="btn btn-warning" id="deleteButton">삭제</button>
+		
+		<sec:authorize access="hasRole('ROLE_ADMIN')">
+			<button class="btn btn-info" id="modifyButton">수정</button>
+			<button class="btn btn-warning" id="deleteButton">삭제</button>
+		</sec:authorize>
 		<br/>
 
 		<!----------- 앨범 커멘트 ------------>
+		<sec:authentication property="principal" var="pinfo" />
 		<div class="review-panel">
 			<div class="panel-header">
 				<h2 style="color:white;margin-left: 10px;">COMMENT</h2>
 			</div>
 			<div class="panel-body contents">
-				
 			</div>
 			<div class="panel-footer" style="text-align:center">
 			
 			</div>
+			<sec:authorize access='isAuthenticated()'>
 			<form role="form" id="commentForm" action="/comment/new" method="post">
 				<textarea name="content" placeholder="댓글을 입력해주세요" rows="4" style="width:100%" required></textarea>
-				<input type="text" name="writerId" placeholder="아이디" required>
-				<input type="text" name="writerName" placeholder="닉네임" required>
+				<input type="hidden" name="writerId" value="${ pinfo.username }">
+				<input type="hidden" name="writerName" value="${ pinfo.member.nickname }">
 				<input type="hidden" name="albumNo" value="${album.albumNo}">
-				<button id="commentSubmit" style="float:right">입력</button>
+				<button id="commentSubmit">입력</button>
 			</form>
+			</sec:authorize>
 		</div>
 		
 	</div>
@@ -148,6 +154,12 @@ $(document).ready(function(e) {
 	function showCommentList(page){
 		console.log("show comment list: page" + page);
 		
+		var userid = "";
+		<sec:authorize access='isAuthenticated()'>
+			userid = "${pinfo.username}"
+		</sec:authorize>
+		console.log("userid: " + userid);
+		
 		commentService.getList({ albumNo : albumNo, page : page || 1 },
 		function(commentCnt, list){
 			console.log("commentCnt: " + commentCnt);
@@ -162,9 +174,11 @@ $(document).ready(function(e) {
 				str += "<div class='readComment'>"
 				str += "	<div class='comment-header'><strong class='primary-font'>" + list[i].writerName + "</strong>";
 				str += "		<small class='text-muted'>" + commentService.displayTime(list[i].moddate) + "</small>";
-				str += "		<a class='deleteComment' href='" + list[i].commentNo + "' data-writer='" + list[i].writerId + "' style='float:right'>삭제</a>"
-				str += "		<a class='modifyComment' href='" + list[i].commentNo + "' style='float:right'>수정&nbsp;</a></div>"
-				str += "	<div class='comment-body'><p><pre style='white-space:pre-wrap'>" + list[i].content + "</pre></p></div></div>";
+				if (userid == list[i].writerId){
+					str += "		<a class='deleteComment' href='" + list[i].commentNo + "' data-writer='" + list[i].writerId + "' style='float:right'>삭제</a>"
+					str += "		<a class='modifyComment' href='" + list[i].commentNo + "' style='float:right'>수정&nbsp;</a>"
+				}
+				str += "</div><div class='comment-body'><p><pre style='white-space:pre-wrap'>" + list[i].content + "</pre></p></div></div>";
 			}
 			
 			commentBody.html(str);
@@ -213,6 +227,14 @@ $(document).ready(function(e) {
 		showCommentList(pageNum);
 	})
 	
+	//Ajax spring security header
+	var csrfHeaderName="${_csrf.headerName}";
+	var csrfTokenValue="${_csrf.token}";
+	
+	$(document).ajaxSend(function(e, xhr, options){
+		xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);	
+	});
+	
 	$('#commentSubmit').on("click", function(e){
 		e.preventDefault();
 		var formArr = $("form[id=commentForm]").serializeArray() ;
@@ -223,6 +245,7 @@ $(document).ready(function(e) {
        			obj[this.name] = this.value;
             });
         }
+        console.log(obj);
 		 
 		commentService.add(obj, 
 		function(result){

@@ -10,6 +10,7 @@ import java.util.UUID;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ public class ImageController {
 		return false;
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/uploadAjax")
 	@ResponseBody
 	public ResponseEntity<String> uploadAjaxPost(MultipartFile file) {
@@ -95,6 +97,7 @@ public class ImageController {
 		return result;
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/deleteFile")
 	@ResponseBody
 	public ResponseEntity<String> deleteFile(String fileName) {

@@ -9,7 +9,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.muizic.domain.AlbumCommentDTO;
-import com.muizic.domain.CommentUpdateRequestDTO;
 import com.muizic.domain.CommentVO;
 import com.muizic.domain.Criteria;
 

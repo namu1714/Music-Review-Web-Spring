@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.muizic.mapper.MemberMapper">
+
+<resultMap type="com.muizic.domain.MemberVO" id="memberMap">
+	<id property="memberid" column="memberid"/>
+	<result property="memberid" column="memberid"/>
+	<result property="password" column="password"/>
+	<result property="nickname" column="nickname"/>
+	<result property="regdate" column="regdate"/>
+	<collection property="authList" resultMap="authMap"></collection>
+</resultMap>
+
+<resultMap type="com.muizic.domain.AuthVO" id="authMap">
+	<result property="memberid" column="memberid"/>
+	<result property="auth" column="auth"/>
+</resultMap>
+
+<select id="read" resultMap="memberMap">
+	select mem.memberid, password, nickname, enabled, regdate, auth
+	from member mem LEFT OUTER JOIN member_auth auth on mem.memberid = auth.memberid
+	where mem.memberid = #{memberid}
+</select>
+
+<insert id="insert">
+	insert into member (memberid, password, nickname, email, regdate)
+	values (#{memberid}, #{password}, #{nickname}, #{email}, #{regdate, jdbcType=TIMESTAMP})
+</insert>
+
+<insert id="insertAuth">
+	insert into member_auth (memberid, auth)
+	values (#{memberid}, #{auth})
+</insert>
+
+<update id="update">
+	update member
+	set nickname = #{nickname},
+	password = #{password}
+	where memberid = #{memberid}
+</update>
+
+<delete id="delete">
+	delete from member where memberid = #{memberid}
+</delete>
+
+</mapper>

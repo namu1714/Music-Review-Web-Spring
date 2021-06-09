@@ -1,5 +1,6 @@
 package com.muizic.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ public class CommentViewController {
 	private final CommentService commentService;
 	private final AlbumService albumService;
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/modify")
 	public void get(@RequestParam("no") Long commentNo, Model model) {
 		CommentVO comment = commentService.get(commentNo);
@@ -30,6 +32,7 @@ public class CommentViewController {
 		model.addAttribute("album", albumService.get(comment.getAlbumNo()));
 	}
 	
+	@PreAuthorize("principal.username == #comment.writerId")
 	@PostMapping("/modify")
 	public String modify(CommentVO comment, RedirectAttributes rttr) {
 		log.info("modify: " + comment);

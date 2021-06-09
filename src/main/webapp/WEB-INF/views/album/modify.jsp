@@ -12,8 +12,7 @@
 				<h2>앨범 정보 수정</h2><br/>
 			</div>
 		</div>
-		<form id="albumForm" role="form" action="/album/modify" method="post" 
-			enctype="multipart/form-data">
+		<form id="albumForm" role="form" action="/album/modify" method="post">
 
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">아티스트명</label>
@@ -53,6 +52,7 @@
 			
 			<input type="hidden" name="coverImage" value='<c:out value="${album.coverImage}"/>'>
 			<input type="hidden" name="albumNo" value="${album.albumNo}">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 			<input type="submit" value="확인" style="width:100px">
 		</form>
@@ -73,6 +73,13 @@ $(function(){
 
 	uploadDiv.append(str);
 });
+
+var csrfHeaderName="${_csrf.headerName}";
+var csrfTokenValue="${_csrf.token}";
+
+$(document).ajaxSend(function(e, xhr, options){
+	xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);	
+});	
 </script>
 <script src="/resources/js/coverImage.js"></script>
 

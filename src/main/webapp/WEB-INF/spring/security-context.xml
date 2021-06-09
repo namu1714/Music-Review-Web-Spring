@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="bcyptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+	<bean id="customUserDetailsService" class="com.muizic.security.CustomUserDetailsService"/>
+	
+	<bean id="customAccessDenied" class="com.muizic.security.CustomAccessDeniedHandler" />
+	<bean id="customLoginSuccess" class="com.muizic.security.CustomLoginSuccessHandler" />
+	<bean id="customLogoutSuccess" class="com.muizic.security.CustomLogoutSuccessHandler" />
+	
+	<security:http>
+		<security:intercept-url pattern="/album/list" access="permitAll" />
+		<security:intercept-url pattern="/album/read" access="permitAll" />
+		<security:intercept-url pattern="/album/upload" access="hasRole('ROLE_MEMBER')" />
+		<security:intercept-url pattern="/album/modify" access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/comment/modify" access="hasRole('ROLE_MEMBER')" />
+	
+		<security:access-denied-handler ref="customAccessDenied" />
+		<security:form-login login-page="/login" authentication-success-handler-ref="customLoginSuccess"/>
+		<security:logout success-handler-ref="customLogoutSuccess" invalidate-session="true" delete-cookies="remember-me, JSESSION_ID"/>
+		
+		<security:remember-me data-source-ref="dataSource" token-validity-seconds="604800" />
+	</security:http>
+	
+	<security:authentication-manager>
+		<security:authentication-provider user-service-ref="customUserDetailsService">
+			<security:password-encoder ref="bcyptPasswordEncoder" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+</beans>

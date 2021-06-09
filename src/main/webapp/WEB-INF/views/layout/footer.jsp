@@ -1,8 +1,12 @@
 	<div id="footer">
-		<div id="copyright">
-		namu1714@naver.com<br>
-		2020 muIzik (c) All Rights Reserved
-		</div>
+		<div class="sidebar"></div>
+			<div class="footer-content">
+				<div id="copyright" style="text-align:left">
+				namu1714@naver.com<br>
+				2020 muIzik (c) All Rights Reserved
+				</div>
+			</div>
+		<div class="sidebar"></div>
 	</div>
 </div>
 

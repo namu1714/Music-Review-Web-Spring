@@ -75,17 +75,20 @@ public class AlbumMapperTests {
 		list.forEach(album -> log.info(album.getTitle()));
 	}
 	
+	@Test
 	public void testTotalCount() {
 		Criteria cri = new Criteria();
 		cri.setAmount(9);
 		cri.setPageNum(1);
+		cri.setKeyword("예린");
+		cri.setType("AT");
 		log.info("TOTAL ALBUM COUNT: " + mapper.getTotalCount(cri));
 	}
 	
 	@Test
 	public void testSearch() {
 		Criteria cri = new Criteria();
-		cri.setKeyword("");
+		cri.setKeyword("예린");
 		cri.setType("AT");
 		
 		List<AlbumVO> list = mapper.getListWithPaging(cri);

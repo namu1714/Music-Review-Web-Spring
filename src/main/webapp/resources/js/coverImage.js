@@ -35,7 +35,7 @@ $(document).ready(function(e) {
 		}
 
 		formData.append("file", file[0]);
-		
+
 		// 이미 선택된 파일이 있으면 삭제
 		var albumForm = $("#albumForm");
 		var deleteImage = albumForm.find("input[name='coverImage']").val();

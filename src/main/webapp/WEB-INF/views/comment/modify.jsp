@@ -48,6 +48,7 @@
 			
 			<input type="hidden" name="commentNo" value="${comment.commentNo}">
 			<input type="hidden" name="albumNo" value="${album.albumNo}">
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 			
 			<input type="submit" value="확인" style="width:100px">
 		</form>

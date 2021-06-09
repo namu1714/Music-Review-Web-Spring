@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.muizic.domain.AlbumCommentDTO;
-import com.muizic.domain.CommentUpdateRequestDTO;
 import com.muizic.domain.CommentVO;
 import com.muizic.domain.Criteria;
 import com.muizic.mapper.CommentMapper;

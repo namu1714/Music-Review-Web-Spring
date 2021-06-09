@@ -10,7 +10,7 @@ html,body {
 }
 #main{
 	height: 100%;
-	display: table;
+	display: table-row;
 	width: 100%;
 	border:0; margin:0; padding:0;
 }
@@ -36,11 +36,26 @@ html,body {
 	margin:0; padding:20px;
 	text-align:center;
 }
-#title{display:table-cell; vertical-align:middle}
+.header-content{
+	display:table-cell;
+	margin:0;
+	padding:10px;
+	text-align:center;
+}
+.footer-content{
+	display:table-cell;
+	margin:0;
+}
+#title{vertical-align:middle}
 #title_text{text-decoration:none; color:white;}
 
-#loginform{position:absolute; top:9px; right:250px;}
+#loginform{
+	font-size:80%;
+	color:white;
+	float:right;
+}
 .login{
+	margin-left:5px;
 	border-radius:2px;
 	background-color:#cc7a97;
 	color:#ffe9f1;

@@ -12,9 +12,8 @@
 				<h2>앨범 업로드</h2><br/>
 			</div>
 		</div>
-		<form id="albumForm" role="form" action="/album/upload" method="post" 
-			enctype="multipart/form-data">
-
+		<form id="albumForm" role="form" method="post" action="/album/upload">
+			
 			<div class="form-group row">
 				<label class="col-sm-2 col-form-label">아티스트명</label>
 				<div class="col-sm-10">
@@ -49,7 +48,8 @@
 			</div>
 			
 			<input type="hidden" name="coverImage" value="">
-
+			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+			
 			<input type="submit" value="확인" style="width:100px">
 		</form>
 	</div>
@@ -57,6 +57,17 @@
 
 	<div class="sidebar"></div>
 </div>
+
+<script type="text/javascript">
+$(document).ready(function(e) {
+	var csrfHeaderName="${_csrf.headerName}";
+	var csrfTokenValue="${_csrf.token}";
+	
+	$(document).ajaxSend(function(e, xhr, options){
+		xhr.setRequestHeader(csrfHeaderName, csrfTokenValue);	
+	});	
+});
+</script>
 
 <script src="/resources/js/coverImage.js"></script>
 <%@ include file="../layout/footer.jsp"%>
