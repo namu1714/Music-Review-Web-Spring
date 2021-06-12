@@ -61,4 +61,10 @@ public class MemberServiceImpl implements MemberService {
 		return mapper.delete(id) == 1 ? true: false;
 	}
 
+	@Override
+	public boolean idCheck(String id) {
+		log.info("아이디 존재여부 체크");
+		return mapper.read(id) != null ? true : false;
+	}
+
 }

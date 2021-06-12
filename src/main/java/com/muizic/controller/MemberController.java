@@ -28,8 +28,11 @@ public class MemberController {
 	@GetMapping("/login")
 	public void loginPage(HttpServletRequest request) {
 		log.info("login page");
-		String referrer = request.getHeader("Referer");
-	    request.getSession().setAttribute("prevPage", referrer);
+		String referer = request.getHeader("Referer");
+		if(referer.endsWith("joinSuccess")) {
+			referer = "/album/list";
+		}
+	    request.getSession().setAttribute("prevPage", referer);
 	}
 
 	@GetMapping("/accessDenied")

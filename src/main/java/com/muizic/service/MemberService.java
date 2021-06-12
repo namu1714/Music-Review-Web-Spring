@@ -11,4 +11,6 @@ public interface MemberService {
 	public boolean modify(UserUpdateDTO dto);
 	
 	public boolean remove(String id);
+	
+	public boolean idCheck(String id);
 }

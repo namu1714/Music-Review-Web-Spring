@@ -54,7 +54,6 @@ public class MemberServiceTests {
 		log.info(member);
 	}
 	
-	@Test
 	public void testRemove() {
 		log.info(service.remove("member1"));
 	}
@@ -70,5 +69,11 @@ public class MemberServiceTests {
 		
 		service.modify(dto);
 		log.info("memberid" + dto.getMemberid());
+	}
+	
+	@Test
+	public void testIdCheck() {
+		String id = "namu171";
+		log.info(service.idCheck(id));
 	}
 }

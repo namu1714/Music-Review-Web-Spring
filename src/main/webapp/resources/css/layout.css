@@ -49,6 +49,16 @@ html,body {
 #title{vertical-align:middle}
 #title_text{text-decoration:none; color:white;}
 
+.loginBlock{
+	width:400px; height:280px;
+	border: 1px solid lightgray;
+	margin-top:100px;
+	display: inline-block;
+}
+.loginBlock form{
+	margin-top:70px;
+}
+
 #loginform{
 	font-size:80%;
 	color:white;
